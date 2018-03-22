@@ -6,4 +6,5 @@ final class UserController {
         let list = try User.all()
         return try list.makeJSON()
     }
+    
 }
