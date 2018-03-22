@@ -48,3 +48,14 @@ extension User: Preparation {
     
     
 }
+
+// JSON Representation
+
+extension User: JSONRepresentable {
+    func makeJSON() throws -> JSON {
+        var json = JSON()
+        try json.set("id", id)
+        try json.set("username", username)
+        return json
+    }
+}
