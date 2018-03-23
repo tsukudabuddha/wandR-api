@@ -1,13 +1,14 @@
 import Vapor
+import Fluent
 
 final class UserController {
     
-    func list(_ req: Request) throws -> ResponseRepresentable {
+    func index(_ req: Request) throws -> ResponseRepresentable {
         let list = try User.all()
         return try list.makeJSON()
     }
     
-    func singleUser(_ req: Request) throws -> ResponseRepresentable {
+    func showUser(_ req: Request) throws -> ResponseRepresentable {
         guard let userId = req.parameters["id"]?.int else {
             return Response(status: .badRequest)
         }
@@ -24,5 +25,18 @@ final class UserController {
         let user = User(username: username)
         try user.save()
         return Response(redirect: "/users")
+    }
+    
+    func remove(_ req: Request) throws -> ResponseRepresentable {
+        guard let userId = req.data["id"]?.int else {
+            return Response(status: .badRequest)
+        }
+        
+        if let user = try User.find(userId) {
+            try user.delete()
+            return Response(status: .ok)
+        }
+        
+        return Response(status: .imATeapot)
     }
 }

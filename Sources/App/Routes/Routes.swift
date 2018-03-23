@@ -1,7 +1,16 @@
 import Vapor
 
 extension Droplet {
+    
     func setupRoutes() throws {
+        
+        let userController = UserController()
+        
+        get("allUsers", handler: userController.index)
+        get("users", handler: userController.showUser)
+        post("users", handler: userController.create)
+        delete("users", handler: userController.remove)
+        
         get("hello") { req in
             var json = JSON()
             try json.set("hello", "world")
