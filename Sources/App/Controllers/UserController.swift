@@ -24,7 +24,7 @@ final class UserController {
         
         let user = User(username: username)
         try user.save()
-        return Response(redirect: "/users")
+        return Response(redirect: "/allUsers")
     }
     
     func remove(_ req: Request) throws -> ResponseRepresentable {

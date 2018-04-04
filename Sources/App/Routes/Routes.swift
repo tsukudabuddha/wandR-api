@@ -19,12 +19,19 @@ extension Droplet {
         }
         
         get("search") { req in
-            let photoResponse = try self.client.get("https://api.unsplash.com/search/photos?per_page=50&query=\(req.parameters["query"])", ["Authorization" : "Client-ID 0c0435fc2b2eaa7968f2b6f91c5cfb706363ac15b5acf50449a533339fdf31c2"
+            let photosResponse = try self.client.get("https://api.unsplash.com/search/photos?per_page=50&query=\(req.parameters["query"] ?? "")", ["Authorization" : "Client-ID 0c0435fc2b2eaa7968f2b6f91c5cfb706363ac15b5acf50449a533339fdf31c2"
                 ])
-            let urls = photoResponse.json?["results"]?["urls"]?["regular"]
-            return urls!
+            let urls = photosResponse.json?["results"]?["urls"]?["regular"]
+            let tags = photosResponse.json?["results"]?["photo_tags"]?["title"]
             
-            }
+            return urls!
+        }
+        
+        get("travel") { req in
+            let photosResponse = try self.client.get("https://api.reddit.com/r/travel/hot.json")
+            let urls = photosResponse.json?["data"]?["children"]?["data"]?["preview"]?["images"]?["source"]?["url"]
+            return urls!
+        }
 
         get("plaintext") { req in
             return "Hello, world!"
